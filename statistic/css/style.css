@@ -1,0 +1,130 @@
+/* ==================== Globale Styles ==================== */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    line-height: 1.6;
+}
+
+h1, h2, h3, h4 {
+    font-weight: 700;
+    letter-spacing: -0.025em;
+}
+
+/* ==================== Cards & Hover ==================== */
+.card {
+    transition: all 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+}
+
+.card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.15);
+}
+
+/* ==================== Sterne ==================== */
+.star {
+    cursor: pointer;
+    transition: all 0.2s ease;
+    user-select: none;
+}
+
+.star:hover {
+    transform: scale(1.3);
+    color: #fbbf24;
+}
+
+/* ==================== Flash Messages ==================== */
+.flash-message {
+    animation: slideIn 0.4s ease forwards;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(120%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* ==================== Tabs ==================== */
+.tab-button {
+    position: relative;
+    transition: all 0.25s ease;
+}
+
+.tab-button:after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 0;
+    height: 3px;
+    background: #4f46e5;
+    transition: width 0.3s ease;
+}
+
+.tab-button:hover:after,
+.tab-button.active:after {
+    width: 100%;
+}
+
+/* ==================== Formulare ==================== */
+input, textarea, select {
+    transition: all 0.3s ease;
+}
+
+input:focus, textarea:focus, select:focus {
+    border-color: #6366f1;
+    box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.15);
+    outline: none;
+}
+
+/* ==================== Buttons ==================== */
+.btn {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+}
+
+/* ==================== Blockierte Bewertungen ==================== */
+pre {
+    white-space: pre-wrap;
+    word-break: break-all;
+    background: #f8fafc;
+    padding: 1.25rem;
+    border-radius: 1rem;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+/* ==================== Responsive ==================== */
+@media (max-width: 768px) {
+    .grid-cols-5 {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .text-5xl {
+        font-size: 2.5rem;
+    }
+    
+    .text-7xl {
+        font-size: 3.5rem;
+    }
+}
+
+/* ==================== Extra Polish ==================== */
+.glass {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(12px);
+}
+
+.shadow-soft {
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.05), 
+                0 4px 6px -4px rgb(0 0 0 / 0.05);
+}

@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="min-h-screen bg-gray-50 py-12">
+    <div class="max-w-3xl mx-auto px-6">
+        <div class="bg-white rounded-3xl shadow-xl p-10">
+            
+            <a href="/student" class="text-indigo-600 mb-8 inline-flex items-center gap-2 hover:underline">
+                ← Zurück zu den Lehrern
+            </a>
+
+            <h1 class="text-3xl font-bold mb-2">Bewerte: {{ teacher.full_name }}</h1>
+            <p class="text-gray-500 mb-10">Gib eine Note von 1 (sehr gut) bis 6 (ungenügend)</p>
+
+            <form method="POST" class="space-y-12">
+                <div>
+                    <label class="block text-xl font-semibold mb-4">1. Freundlichkeit</label>
+                    <select name="friendliness" required 
+                            class="w-full px-6 py-5 border border-gray-300 rounded-2xl text-lg focus:outline-none focus:border-indigo-500">
+                        <option value="">Note wählen...</option>
+                        <option value="1">1 – Sehr gut</option>
+                        <option value="2">2 – Gut</option>
+                        <option value="3">3 – Befriedigend</option>
+                        <option value="4">4 – Ausreichend</option>
+                        <option value="5">5 – Mangelhaft</option>
+                        <option value="6">6 – Ungenügend</option>
+                    </select>
+                    <textarea name="comment_f" rows="4" required 
+                              class="w-full mt-4 border border-gray-300 rounded-2xl p-5 focus:outline-none focus:border-indigo-500"
+                              placeholder="Begründung (mindestens 10 Wörter)..."></textarea>
+                </div>
+
+                <div>
+                    <label class="block text-xl font-semibold mb-4">2. Fairness</label>
+                    <select name="fairness" required 
+                            class="w-full px-6 py-5 border border-gray-300 rounded-2xl text-lg focus:outline-none focus:border-indigo-500">
+                        <option value="">Note wählen...</option>
+                        <option value="1">1 – Sehr gut</option>
+                        <option value="2">2 – Gut</option>
+                        <option value="3">3 – Befriedigend</option>
+                        <option value="4">4 – Ausreichend</option>
+                        <option value="5">5 – Mangelhaft</option>
+                        <option value="6">6 – Ungenügend</option>
+                    </select>
+                    <textarea name="comment_fa" rows="4" required 
+                              class="w-full mt-4 border border-gray-300 rounded-2xl p-5 focus:outline-none focus:border-indigo-500"
+                              placeholder="Begründung..."></textarea>
+                </div>
+
+                <div>
+                    <label class="block text-xl font-semibold mb-4">3. Geduld</label>
+                    <select name="patience" required 
+                            class="w-full px-6 py-5 border border-gray-300 rounded-2xl text-lg focus:outline-none focus:border-indigo-500">
+                        <option value="">Note wählen...</option>
+                        <option value="1">1 – Sehr gut</option>
+                        <option value="2">2 – Gut</option>
+                        <option value="3">3 – Befriedigend</option>
+                        <option value="4">4 – Ausreichend</option>
+                        <option value="5">5 – Mangelhaft</option>
+                        <option value="6">6 – Ungenügend</option>
+                    </select>
+                    <textarea name="comment_p" rows="4" required 
+                              class="w-full mt-4 border border-gray-300 rounded-2xl p-5 focus:outline-none focus:border-indigo-500"
+                              placeholder="Begründung..."></textarea>
+                </div>
+
+                <div>
+                    <label class="block text-xl font-semibold mb-4">4. Unterrichtsqualität</label>
+                    <select name="teaching_quality" required 
+                            class="w-full px-6 py-5 border border-gray-300 rounded-2xl text-lg focus:outline-none focus:border-indigo-500">
+                        <option value="">Note wählen...</option>
+                        <option value="1">1 – Sehr gut</option>
+                        <option value="2">2 – Gut</option>
+                        <option value="3">3 – Befriedigend</option>
+                        <option value="4">4 – Ausreichend</option>
+                        <option value="5">5 – Mangelhaft</option>
+                        <option value="6">6 – Ungenügend</option>
+                    </select>
+                    <textarea name="comment_t" rows="4" required 
+                              class="w-full mt-4 border border-gray-300 rounded-2xl p-5 focus:outline-none focus:border-indigo-500"
+                              placeholder="Begründung..."></textarea>
+                </div>
+
+                <div>
+                    <label class="block text-xl font-semibold mb-4">5. Organisation</label>
+                    <select name="organization" required 
+                            class="w-full px-6 py-5 border border-gray-300 rounded-2xl text-lg focus:outline-none focus:border-indigo-500">
+                        <option value="">Note wählen...</option>
+                        <option value="1">1 – Sehr gut</option>
+                        <option value="2">2 – Gut</option>
+                        <option value="3">3 – Befriedigend</option>
+                        <option value="4">4 – Ausreichend</option>
+                        <option value="5">5 – Mangelhaft</option>
+                        <option value="6">6 – Ungenügend</option>
+                    </select>
+                    <textarea name="comment_o" rows="4" required 
+                              class="w-full mt-4 border border-gray-300 rounded-2xl p-5 focus:outline-none focus:border-indigo-500"
+                              placeholder="Begründung..."></textarea>
+                </div>
+
+                <button type="submit" 
+                        class="w-full bg-green-600 hover:bg-green-700 text-white py-6 rounded-3xl text-xl font-semibold transition mt-6">
+                    Bewertung absenden
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

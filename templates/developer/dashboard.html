@@ -1,0 +1,158 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="min-h-screen bg-gray-50">
+    <div class="max-w-6xl mx-auto p-8">
+        
+        <!-- Header -->
+        <div class="flex justify-between items-center mb-10">
+            <div>
+                <h1 class="text-4xl font-bold text-gray-900 flex items-center gap-3">
+                    <span class="text-indigo-600">📢</span> LehrerEcho
+                </h1>
+                <p class="text-gray-600">Entwickler Dashboard • Theodor Schwehm</p>
+            </div>
+            <a href="/logout" 
+               class="px-6 py-3 bg-red-600 hover:bg-red-700 text-white rounded-2xl font-medium transition flex items-center gap-2">
+                <i class="fas fa-sign-out-alt"></i> Abmelden
+            </a>
+        </div>
+
+        <!-- Tabs -->
+        <div class="border-b border-gray-200 mb-10">
+            <div class="flex space-x-12 text-lg font-medium">
+                <a href="#" onclick="showTab(1)" id="tab1" class="tab-button py-4 border-b-4 border-transparent hover:text-gray-700">Schulschlüssel</a>
+                <a href="#" onclick="showTab(2)" id="tab2" class="tab-button py-4 border-b-4 border-transparent hover:text-gray-700">Erstellte Schlüssel</a>
+                <a href="#" onclick="showTab(3)" id="tab3" class="tab-button py-4 border-b-4 border-transparent hover:text-gray-700">Bewertungsphase</a>
+                <a href="#" onclick="showTab(4)" id="tab4" class="tab-button py-4 border-b-4 border-indigo-600 text-indigo-600">Blockierte Bewertungen</a>
+            </div>
+        </div>
+
+        <!-- TAB 1: SCHULSCHLÜSSEL -->
+        <div id="tab-content-1" class="tab-content hidden">
+            <div class="bg-white rounded-3xl shadow-xl p-10">
+                <h2 class="text-2xl font-semibold mb-6">Neuen Schulschlüssel für Direktor erstellen</h2>
+                <form method="POST" action="/developer/create_school_key" class="max-w-md">
+                    <div class="mb-6">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Maximale Nutzeranzahl</label>
+                        <input type="number" name="max_users" value="1" min="1" 
+                               class="w-full px-5 py-4 border border-gray-300 rounded-2xl focus:outline-none focus:border-indigo-500">
+                    </div>
+                    <button type="submit" 
+                            class="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-5 rounded-3xl text-xl font-semibold transition">
+                        18-stelligen Schulschlüssel generieren
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- TAB 2: ERSTELLTE SCHLÜSSEL -->
+        <div id="tab-content-2" class="tab-content hidden">
+            <div class="bg-white rounded-3xl shadow-xl p-8">
+                <h2 class="text-2xl font-semibold mb-8">Alle erstellten Schlüssel</h2>
+                
+                <div class="mb-12">
+                    <h3 class="font-semibold text-lg mb-4 text-indigo-600">Schulschlüssel (für Director)</h3>
+                    {% if school_keys %}
+                        {% for k in school_keys %}
+                        <div class="flex justify-between items-center bg-gray-50 p-5 rounded-2xl mb-3">
+                            <span class="font-mono text-lg">{{ k.key }}</span>
+                            <span class="text-sm text-gray-500">Max. {{ k.max_users }} • {{ k.created_at[:10] }}</span>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <p class="text-gray-500 italic">Noch keine Schulschlüssel erstellt.</p>
+                    {% endif %}
+                </div>
+
+                <div>
+                    <h3 class="font-semibold text-lg mb-4 text-indigo-600">Personenschlüssel (Lehrer & Schüler)</h3>
+                    {% if person_keys %}
+                        {% for k in person_keys %}
+                        <div class="flex justify-between items-center bg-gray-50 p-5 rounded-2xl mb-3">
+                            <div>
+                                <span>{{ k.full_name }}</span>
+                                {% if k.class_name %}<span class="text-gray-400"> • {{ k.class_name }}</span>{% endif %}
+                            </div>
+                            <span class="font-mono">{{ k.key }}</span>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <p class="text-gray-500 italic">Noch keine Personenschlüssel erstellt.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 3: BEWERTUNGSPHASE -->
+        <div id="tab-content-3" class="tab-content hidden">
+            <div class="bg-white rounded-3xl shadow-xl p-12 text-center">
+                <h2 class="text-3xl font-bold mb-4">Bewertungsphase steuern</h2>
+                <p class="text-gray-600 mb-10">Steuere, wann Schüler Lehrer bewerten können.</p>
+                
+                <div id="phase-status" class="inline-flex items-center gap-4 text-5xl font-bold py-8 px-16 rounded-3xl mb-12 transition-all
+                    {% if evaluation_active %}bg-green-100 text-green-700 border-2 border-green-200{% else %}bg-red-100 text-red-700 border-2 border-red-200{% endif %}">
+                    {% if evaluation_active %}
+                        🟢 AKTIV
+                    {% else %}
+                        🔴 INAKTIV
+                    {% endif %}
+                </div>
+
+                <div class="flex justify-center gap-8">
+                    <form method="POST" action="/developer/start_evaluation">
+                        <button type="submit" class="px-14 py-6 bg-green-600 hover:bg-green-700 text-white text-xl font-semibold rounded-3xl transition flex items-center gap-3">
+                            ▶️ Phase STARTEN
+                        </button>
+                    </form>
+                    <form method="POST" action="/developer/stop_evaluation">
+                        <button type="submit" class="px-14 py-6 bg-red-600 hover:bg-red-700 text-white text-xl font-semibold rounded-3xl transition flex items-center gap-3">
+                            ⏹️ Phase BEENDEN
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 4: BLOCKIERTE BEWERTUNGEN -->
+        <div id="tab-content-4" class="tab-content">
+            <div class="bg-white rounded-3xl shadow-xl p-8">
+                <h2 class="text-2xl font-semibold mb-8">Blockierte Bewertungen</h2>
+                {% if blocked %}
+                    {% for b in blocked %}
+                    <div class="border border-red-200 bg-red-50 rounded-2xl p-8 mb-8">
+                        <p class="text-xs text-gray-500 mb-4">ID: {{ b.id }} • {{ b.created_at[:16] }}</p>
+                        <pre class="bg-white p-6 rounded-xl text-sm overflow-auto whitespace-pre-wrap">{{ b.raw_data }}</pre>
+                        <div class="flex gap-4 mt-8">
+                            <form method="POST" action="/developer/approve_blocked/{{ b.id }}">
+                                <button type="submit" class="px-10 py-4 bg-green-600 hover:bg-green-700 text-white rounded-2xl font-semibold">✅ Zulassen</button>
+                            </form>
+                            <form method="POST" action="/developer/reject_blocked/{{ b.id }}">
+                                <button type="submit" class="px-10 py-4 bg-red-600 hover:bg-red-700 text-white rounded-2xl font-semibold">❌ Verweigern</button>
+                            </form>
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="text-center py-20">
+                        <p class="text-2xl text-green-600">Keine blockierten Bewertungen vorhanden.</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function showTab(tab) {
+    document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+    document.getElementById('tab-content-' + tab).classList.remove('hidden');
+    
+    document.querySelectorAll('.tab-button').forEach(el => {
+        el.classList.remove('border-indigo-600', 'text-indigo-600');
+        el.classList.add('border-transparent');
+    });
+    document.getElementById('tab' + tab).classList.add('border-indigo-600', 'text-indigo-600');
+}
+showTab(3); // Standard-Tab = Bewertungsphase
+</script>
+{% endblock %}

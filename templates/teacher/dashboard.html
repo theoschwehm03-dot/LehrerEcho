@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="min-h-screen bg-gray-50">
+    <div class="max-w-6xl mx-auto p-8">
+        
+        <div class="flex justify-between items-center mb-10">
+            <div>
+                <h1 class="text-4xl font-bold text-gray-900 flex items-center gap-3">
+                    <span class="text-indigo-600">📊</span> LehrerEcho
+                </h1>
+                <p class="text-gray-600">Willkommen, {{ session.name }}</p>
+            </div>
+            <a href="/logout" class="px-6 py-3 bg-red-600 hover:bg-red-700 text-white rounded-2xl font-medium">
+                Abmelden
+            </a>
+        </div>
+
+        <!-- Tabs -->
+        <div class="border-b border-gray-200 mb-10">
+            <div class="flex space-x-12 text-lg font-medium">
+                <a href="#" onclick="showTab(1)" id="tab1" class="tab-button py-4 border-b-4 border-indigo-600 text-indigo-600">Aktuelles Halbjahr</a>
+                <a href="#" onclick="showTab(2)" id="tab2" class="tab-button py-4 border-b-4 border-transparent hover:text-gray-700">Vorherige Halbjahre</a>
+            </div>
+        </div>
+
+        <!-- Tab 1: Aktuelles Halbjahr -->
+        <div id="tab-content-1" class="tab-content">
+            <h2 class="text-2xl font-semibold mb-6">Aktuelles Halbjahr ({{ current_semester }})</h2>
+            {% if current_evals %}
+                {% for eval in current_evals %}
+                <div class="bg-white rounded-3xl shadow-xl p-8 mb-8">
+                    <!-- gleicher Inhalt wie vorher -->
+                    <div class="flex justify-between mb-6">
+                        <h3 class="text-xl font-semibold">Bewertung vom {{ eval.created_at[:10] }}</h3>
+                    </div>
+                    <div class="grid grid-cols-5 gap-8 text-center mb-10">
+                        <div><p class="text-5xl font-bold text-indigo-600">{{ eval.friendliness }}</p><p class="text-sm text-gray-500">Freundlichkeit</p></div>
+                        <div><p class="text-5xl font-bold text-indigo-600">{{ eval.fairness }}</p><p class="text-sm text-gray-500">Fairness</p></div>
+                        <div><p class="text-5xl font-bold text-indigo-600">{{ eval.patience }}</p><p class="text-sm text-gray-500">Geduld</p></div>
+                        <div><p class="text-5xl font-bold text-indigo-600">{{ eval.teaching_quality }}</p><p class="text-sm text-gray-500">Unterricht</p></div>
+                        <div><p class="text-5xl font-bold text-indigo-600">{{ eval.organization }}</p><p class="text-sm text-gray-500">Organisation</p></div>
+                    </div>
+                    <div class="space-y-5 text-gray-700">
+                        <div><strong>Freundlichkeit:</strong> {{ eval.comment_f or 'Keine Begründung' }}</div>
+                        <div><strong>Fairness:</strong> {{ eval.comment_fa or 'Keine Begründung' }}</div>
+                        <div><strong>Geduld:</strong> {{ eval.comment_p or 'Keine Begründung' }}</div>
+                        <div><strong>Unterrichtsqualität:</strong> {{ eval.comment_t or 'Keine Begründung' }}</div>
+                        <div><strong>Organisation:</strong> {{ eval.comment_o or 'Keine Begründung' }}</div>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="text-center py-20 bg-white rounded-3xl shadow">
+                    <p class="text-3xl text-gray-400">Noch keine Bewertungen im aktuellen Halbjahr.</p>
+                </div>
+            {% endif %}
+        </div>
+
+        <!-- Tab 2: Vorherige Halbjahre -->
+        <div id="tab-content-2" class="tab-content hidden">
+            <h2 class="text-2xl font-semibold mb-6">Vorherige Halbjahre</h2>
+            {% if previous_evals %}
+                {% for eval in previous_evals %}
+                <div class="bg-white rounded-3xl shadow p-8 mb-8">
+                    <div class="flex justify-between mb-6">
+                        <h3 class="text-xl font-semibold">{{ eval.semester }} — {{ eval.created_at[:10] }}</h3>
+                    </div>
+                    <!-- gleiche Bewertungsanzeige wie oben -->
+                    <div class="grid grid-cols-5 gap-8 text-center mb-8">
+                        <div><p class="text-4xl font-bold text-indigo-600">{{ eval.friendliness }}</p><small>Freundlichkeit</small></div>
+                        <div><p class="text-4xl font-bold text-indigo-600">{{ eval.fairness }}</p><small>Fairness</small></div>
+                        <div><p class="text-4xl font-bold text-indigo-600">{{ eval.patience }}</p><small>Geduld</small></div>
+                        <div><p class="text-4xl font-bold text-indigo-600">{{ eval.teaching_quality }}</p><small>Unterricht</small></div>
+                        <div><p class="text-4xl font-bold text-indigo-600">{{ eval.organization }}</p><small>Organisation</small></div>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="text-center py-20 bg-white rounded-3xl shadow">
+                    <p class="text-2xl text-gray-400">Noch keine vorherigen Halbjahre.</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<script>
+function showTab(tab) {
+    document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+    document.getElementById('tab-content-' + tab).classList.remove('hidden');
+    
+    document.querySelectorAll('.tab-button').forEach(el => {
+        el.classList.remove('border-indigo-600', 'text-indigo-600');
+        el.classList.add('border-transparent');
+    });
+    document.getElementById('tab' + tab).classList.add('border-indigo-600', 'text-indigo-600');
+}
+showTab(1);
+</script>
+{% endblock %}

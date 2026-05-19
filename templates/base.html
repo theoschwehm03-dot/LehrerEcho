@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LehrerEcho</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="/static/css/style.css">
+    
+    <!-- Tailwind Script für bessere Custom Styles -->
+    <script>
+        tailwind.config = {
+            content: [],
+            theme: {
+                extend: {}
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50 min-h-screen">
+
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+            <div class="flash-message fixed top-6 right-6 z-50 px-8 py-5 rounded-3xl shadow-2xl text-white font-medium max-w-md
+                {% if category == 'success' %}bg-green-600{% 
+                   elif category == 'error' %}bg-red-600{% 
+                   elif category == 'warning' %}bg-orange-600{% 
+                   else %}bg-indigo-600{% endif %}">
+                {{ message|safe }}
+            </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    {% block content %}{% endblock %}
+
+    <script>
+        // Flash Messages automatisch nach 5 Sekunden ausblenden
+        function hideFlashMessages() {
+            const flashes = document.querySelectorAll('.flash-message');
+            flashes.forEach((flash, index) => {
+                setTimeout(() => {
+                    flash.style.transition = 'all 0.5s ease';
+                    flash.style.opacity = '0';
+                    flash.style.transform = 'translateY(-20px)';
+                    setTimeout(() => {
+                        flash.remove();
+                    }, 600);
+                }, 4800 + (index * 100)); // leichter Stagger-Effekt
+            });
+        }
+
+        // Sofort ausführen
+        window.onload = hideFlashMessages;
+    </script>
+</body>
+</html>
