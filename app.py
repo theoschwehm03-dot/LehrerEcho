@@ -410,7 +410,9 @@ def reject_blocked(eval_id):
 if __name__ == '__main__':
     init_db()
     print("=" * 60)
-    print("🚀 LehrerEcho läuft auf http://127.0.0.1:5000")
-    print("   Drücke Ctrl + C zum Beenden")
+    print("🚀 LehrerEcho läuft")
     print("=" * 60)
-    app.run(debug=True, port=5000)
+    
+    # Wichtig für Render!
+    port = int(os.getenv('PORT', 5000))
+    app.run(host='0.0.0.0', port=port, debug=False)
